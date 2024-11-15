@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="https://goodday.great-site.net/" />
+    <meta
+      name="description"
+      content="Zadanie rekrutacyjne Junior AI Developer | Oxido"
+    />
+    <title>Artkuł</title>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Work Sans", sans-serif;
+        color: var(--text-dim);
+        transition: all 0.2s ease-in;
+      }
+
+      :focus {
+        outline: none;
+      }
+
+      :root {
+        --gap: clamp(2rem, 8vw, 4rem);
+
+        --primary: #004bc8;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --text: #ddd;
+          --text-dim: #dddc;
+
+          --background: #223;
+          --background-2: #111118;
+
+          --accent: #ceda63;
+
+          --shadow: #0009 0 10px 20px 5px;
+        }
+
+        nav a:is(:hover, :focus-visible) {
+          filter: brightness(1.5);
+        }
+      }
+
+      @media (prefers-color-scheme: light) {
+        :root {
+          --text: #222;
+          --text-dim: #222d;
+
+          --background: #eee;
+          --background-2: #fff;
+
+          --accent: #e71155;
+
+          --shadow: #0004 0 10px 20px 5px;
+        }
+
+        nav a:is(:hover, :focus-visible) {
+          filter: brightness(0.9);
+        }
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: calc(52px + var(--gap));
+      }
+
+      body {
+        position: relative;
+        min-height: 100svh;
+        background: var(--background);
+      }
+
+      ::-webkit-scrollbar {
+        width: 1rem;
+      }
+
+      ::-webkit-scrollbar-track {
+        background-color: var(--background-2);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        border: 0.25rem solid var(--background-2);
+        border-radius: 1rem;
+        background-color: var(--primary);
+      }
+
+      h1,
+      h2,
+      h3 {
+        line-height: 1;
+        text-wrap: balance;
+        margin-bottom: 0.5rem;
+        color: var(--text);
+      }
+
+      h1 {
+        font-family: "Source Code Pro", monospace;
+        font-size: 2.5rem;
+      }
+
+      h2 {
+        font-family: "Source Code Pro", monospace;
+        font-size: 2rem;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        text-wrap: pretty;
+        max-width: 80ch;
+        margin-bottom: 1rem;
+        line-height: 1.3;
+        font-size: 1rem;
+      }
+
+      a {
+        color: var(--accent);
+
+        &:is(:hover, :focus-visible) {
+          filter: brightness(1.5);
+        }
+      }
+
+      strong {
+        color: var(--text);
+        font-size: 1.25rem;
+      }
+
+      ul {
+        margin-left: 2rem;
+
+        li {
+          line-height: 1;
+          margin-block: 0.25rem;
+
+          &::marker {
+            font-size: 1.5rem;
+            color: var(--primary);
+          }
+        }
+      }
+
+      img {
+        height: auto;
+        max-width: 100%;
+        vertical-align: middle;
+        background: var(--small-img);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 0.25rem;
+        shape-margin: 1rem;
+        object-fit: cover;
+        object-position: center;
+        user-select: none;
+        font-style: italic;
+        font-size: 0.75rem;
+        line-height: 1.75;
+      }
+
+      header {
+        z-index: 999;
+        position: sticky;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-inline: var(--gap);
+        background: var(--background-2);
+        box-shadow: var(--shadow);
+      }
+
+      nav {
+        display: flex;
+        a {
+          color: var(--text);
+          line-height: 1;
+          padding: 1rem 2rem;
+          background: var(--background-2);
+          font-size: 1.25rem;
+          text-decoration: none;
+
+          &:is(:hover, :focus-visible) {
+            color: var(--primary);
+          }
+        }
+
+        button {
+          cursor: pointer;
+          font-size: 1rem;
+          color: #ddd;
+          background: var(--primary);
+          padding: 1rem 2rem;
+          border: none;
+          line-height: 1;
+          transition: 0.1s;
+
+          &:is(:hover, :focus-visible) {
+            filter: brightness(1.5);
+          }
+
+          &:active {
+            transform: scale(0.95);
+          }
+        }
+      }
+
+      main {
+        width: min(1280px, 100% - var(--gap) * 2);
+        margin-inline: auto;
+        margin-bottom: 4rem;
+      }
+
+      article {
+        position: relative;
+
+        menu {
+          margin-bottom: 3rem;
+          margin-left: 1rem;
+        }
+
+        section {
+          img {
+            margin-bottom: 1rem;
+            width: min(100ch, 100%);
+            max-width: unset;
+          }
+
+          &:not(:first-child, :last-child) {
+            margin-bottom: 3rem;
+          }
+
+          &:first-child {
+            position: relative;
+            margin-bottom: 1rem;
+
+            h1 {
+              position: absolute;
+              display: grid;
+              place-items: center;
+              text-align: center;
+              background: radial-gradient(#111118c0, black);
+              inset: 0;
+              margin: 0;
+              color: #ddd;
+            }
+
+            img {
+              margin: 0;
+              width: 100%;
+            }
+          }
+        }
+      }
+
+      @media (min-width: 1300px) {
+        article > menu {
+          position: sticky;
+          top: calc(52px + var(--gap));
+          float: right;
+        }
+      }
+
+      footer {
+        display: flex;
+        flex-wrap: wrap;
+        place-content: center;
+        gap: 1rem;
+
+        background: var(--background-2);
+        padding: var(--gap);
+
+        > * {
+          flex-grow: 1;
+          flex-shrink: 1;
+          flex-basis: calc((100% - 3rem) / 3);
+          min-width: 200px;
+          max-width: 300px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <picture id="logo">
+        <source
+          srcset="Logo-Oxido-biale.png"
+          media="(prefers-color-scheme: dark)"
+        />
+        <source
+          srcset="img/Logo-Oxido-czarne.png"
+          media="(prefers-color-scheme: light)"
+        />
+        <img src="Logo-Oxido-czarne.png" alt="Your logo" />
+      </picture>
+
+      <nav>
+        <a href="#" title="This is only placeholder">Home</a>
+        <a href="#" title="This is only placeholder">About</a>
+        <a href="#" title="This is only placeholder">FAQ</a>
+        <button title="This is only placeholder">Newsletter</button>
+      </nav>
+    </header>
+
+    <main></main>
+
+    <footer>
+      <menu>
+        <h3>Może cię też zainteresować</h3>
+        <ul>
+          <li>
+            <a href="https://goodday.great-site.net/portfolio/">
+              Inne moje projekty
+            </a>
+          </li>
+          <li>
+            <a href="https://fibonaccisite.goodday.great-site.net/?i=1">
+              FibonacciSite
+            </a>
+          </li>
+        </ul>
+      </menu>
+      <div>
+        <h3>Dlaczego to ja powinienem się dostać na to stanowisko?</h3>
+        <p>
+          Myślę że moją najmocniejszą stroną jest adaptacja/elastyczność, zawsze
+          dostosuje się do panujących warónków czy nowych wyzwań. Przykładem
+          nowego wyzwania było to zadanie bo pierwszy raz mam okazje w taki
+          sposób kożystać z AI i widzę naprawdę świetlaną przyszłość dla tego
+          typu rozwiązań.
+        </p>
+      </div>
+    </footer>
+    <p
+      style="
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin: 0;
+        width: 100%;
+        max-width: unset;
+        padding: 4px 0;
+        background: black;
+        color: white;
+        text-align: center;
+        font-size: 16px;
+      "
+    >
+      This website is created by
+      <a
+        href="https://goodday.great-site.net/"
+        target="_blank"
+        title="https://goodday.great-site.net/"
+        style="color: #69ccff"
+        >Mr.GoodDay</a
+      >.
+    </p>
+  </body>
+</html>

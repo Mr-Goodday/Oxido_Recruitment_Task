@@ -1,0 +1,117 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+  const OPENAI_API_KEY = "";
+
+  async function fetchFileContent(url) {
+    console.log("Pobieranie zawartości z pliku: " + url);
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Błąd HTTP: ${response.status}`);
+    return await response.text();
+  }
+
+  async function sendPromptToOpenAI(prompt) {
+    const url = "https://api.openai.com/v1/chat/completions";
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OPENAI_API_KEY}`,
+    };
+
+    const body = JSON.stringify({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 4096,
+    });
+
+    try {
+      console.log("Wysyłanie promptu do OpenAI");
+      const response = await fetch(url, {
+        method: "POST",
+        headers,
+        body,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Błąd w odpowiedzi API: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Odpowiedź z OpenAI:", data.choices[0].message.content);
+      return data.choices[0].message.content;
+    } catch (error) {
+      console.error("Błąd komunikacji z API:", error);
+      return null;
+    }
+  }
+
+  function downloadFile(fileContent, fileName) {
+    console.log("Pobieranie pliku: " + fileName);
+    const blob = new Blob([fileContent], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    link.click();
+  }
+
+  function downloadZip(zip, filename) {
+    console.log("Pobieranie pliku: " + filename);
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(content);
+      link.download = filename;
+      link.click();
+    });
+  }
+
+  async function generateArticle() {
+    try {
+      const artykul = await fetchFileContent("artykul.txt");
+      const szablonHTML = await fetchFileContent("szablon.html");
+
+      const instructions = `Please respond without using code blocks or Markdown formatting, place all content within <article> tags, headers (add <h1> and <h2> tags to existing headers, do not add or create additional headers, add attribute id to <h2> tags), menu (after image under <h1> add <menu> tags, in menu tag add strong "Menu:" text, in menu tag add unsorted list with links to <h2> tags), images (after the headers add <img> tags, set the src attribute to 'image_placeholder.jpg', generate a detailed description in english of the image for the alt attribute), (place the remaining text within <p> tags, add title attribute to <a> tags, wrap each heading and its subsequent content in <section> tags, including <h1> and any image following it. Ensure that <menu> tags are excluded from this wrapping, additionally, insert hyperlinks to relevant terms and concepts in a manner similar to Wikipedia, ensuring the links are contextually appropriate and enhance the reader's understanding. Each hyperlink should include target="_blank" to open in a new tab and a descriptive title attribute to provide additional context about the link's destination):`;
+
+      const prompt = `${instructions} ${artykul}`;
+      const response = await sendPromptToOpenAI(prompt);
+
+      if (response) {
+        const finalHTML = szablonHTML.replace(
+          "<main></main>",
+          `<main>${response}</main>`
+        );
+
+        downloadFile(response, "artykul.html");
+
+        const imageFiles = [
+          "image_placeholder.jpg",
+          "Logo-Oxido-biale.png",
+          "Logo-Oxido-czarne.png",
+        ];
+
+        const zip = new JSZip();
+
+        for (let i = 0; i < imageFiles.length; i++) {
+          if (i == 0) console.log("Dodawanie zdjęć do folderu .zip");
+          const imageUrl = imageFiles[i];
+          const imageResponse = await fetch(imageUrl);
+          if (!imageResponse.ok)
+            throw new Error(`Błąd podczas pobierania obrazu: ${imageUrl}`);
+
+          const imageBlob = await imageResponse.blob();
+          const imageFile = new File([imageBlob], imageUrl);
+          zip.file(imageUrl, imageFile);
+        }
+
+        zip.file("podglad.html", finalHTML);
+        console.log("Dodawanie pliku podglad.html do folderu .zip");
+
+        downloadZip(zip, "podglad.zip");
+      } else {
+        console.error("Brak odpowiedzi z OpenAI.");
+      }
+    } catch (error) {
+      console.error("Błąd podczas generowania artykułu:", error);
+    }
+  }
+
+  generateArticle();
+</script>
